@@ -17,6 +17,8 @@ export default function Home() {
   return (
    <div className="container-fluid">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="icon" type="image/x-icon" href="../public/images/bash.jpeg"/>
+
    { 
     // <Navbar></Navbar>
 <MahmoudPortfolio></MahmoudPortfolio>

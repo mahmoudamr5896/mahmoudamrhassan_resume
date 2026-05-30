@@ -32,8 +32,6 @@ import { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
-
-
 export default function RootLayout({ children }) {
   useEffect(() => {
     import('bootstrap/dist/js/bootstrap.min.js');
@@ -43,6 +41,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="icon" type="image/jpeg" href="/img.jpeg" />
         <title>Mahmoud Amr Hassan</title>
       </head>
       <body className={inter.className}>{children}</body>

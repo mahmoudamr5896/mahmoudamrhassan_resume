@@ -477,6 +477,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { FaChartPie } from "react-icons/fa";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const data = {
@@ -836,6 +837,7 @@ function SectionHeader({ num, title }) {
 // ─── Pages ────────────────────────────────────────────────────────────────────
 function HomePage({ goTo }) {
   const [roleIdx, setRoleIdx] = useState(0);
+  const [spinning, setSpinning] = useState(false);
   useEffect(() => {
     const t = setInterval(() => setRoleIdx(i => (i + 1) % data.roles.length), 2800);
     return () => clearInterval(t);
@@ -846,26 +848,65 @@ function HomePage({ goTo }) {
       <div className="home-bg" />
       <div className="home-grid-overlay" />
       <div className="home-content">
-        <p className="home-greeting">HELLO, I'M</p>
-        <h1 className="home-name">{data.name}</h1>
-        <div className="home-role-row">
-          <span className="home-role-static">I'm a&nbsp;</span>
-          <span className="home-role-dynamic" key={roleIdx}>{data.roles[roleIdx]}</span>
-        </div>
-        <p className="home-tagline">
-          Turning raw data into governance-grade assets &amp; scalable full-stack products.
-        </p>
-        <div className="home-cta-row">
-          <button className="btn-primary" onClick={() => goTo("about")}>View My Work</button>
-          <a className="btn-outline" href={`mailto:${data.contact.email}`}>Contact Me</a>
-        </div>
-        <div className="home-stats">
-          {data.stats.map(s => (
-            <div key={s.label} className="stat-block">
-              <span className="stat-val">{s.value}</span>
-              <span className="stat-lbl">{s.label}</span>
+        <div className="home-hero-row">
+          {/* ── Text Side ── */}
+          <div className="home-hero-text">
+            <p className="home-greeting">HELLO, I'M</p>
+            <h1 className="home-name">{data.name}</h1>
+            <div className="home-role-row">
+              <span className="home-role-static">I'm a&nbsp;</span>
+              <span className="home-role-dynamic" key={roleIdx}>{data.roles[roleIdx]}</span>
             </div>
-          ))}
+            <p className="home-tagline">
+              Turning raw data into governance-grade assets &amp; scalable full-stack products.
+            </p>
+            <div className="home-cta-row">
+              <button className="btn-primary" onClick={() => goTo("about")}>View My Work</button>
+              <a className="btn-outline" href={`mailto:${data.contact.email}`}>Contact Me</a>
+            </div>
+            <div className="home-stats">
+              {data.stats.map(s => (
+                <div key={s.label} className="stat-block">
+                  <span className="stat-val">{s.value}</span>
+                  <span className="stat-lbl">{s.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Avatar Side ── */}
+          <div className="home-avatar-wrap">
+            <div className="home-avatar-ring">
+              <div className="home-avatar">
+                {/* <span className="home-avatar-initials">MAH</span> */}
+                <span className="home-avatar-initials">
+  <div
+  className="home-avatar-wrap"
+  onClick={() => setSpinning(s => !s)}
+  style={{ cursor: "pointer" }}
+>
+  <div
+    className="home-avatar-ring"
+    style={{ animationPlayState: spinning ? "paused" : "running" }}
+  >
+    <div className="home-avatar">
+      <img
+        src="/img.jpeg"
+        alt="Mahmoud Amr Hassan"
+        style={{
+          width: "100%",
+          height: "100%",
+          borderRadius: "50%",
+          objectFit: "cover",
+        }}
+      />
+    </div>
+  </div>
+</div>
+</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <button className="scroll-hint" onClick={() => goTo("about")}>
@@ -1103,7 +1144,7 @@ function Footer({ goTo }) {
     <footer className="footer">
       <div className="footer-inner">
         <div className="footer-logo" onClick={() => goTo("home")}>
-          <span className="footer-logo-dot" />
+          <FaChartPie style={{ color: "#00e5ae", fontSize: 15 }} />
           {data.initials}
         </div>
         <p className="footer-copy">© {new Date().getFullYear()} Mahmoud Amr Hassan · Built with Next.js</p>
@@ -1121,9 +1162,7 @@ export default function MahmoudPortfolio() {
   const [active, setActive] = useState("home");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [prevActive, setPrevActive] = useState(null);
 
-  // Detect scroll on the root container for navbar style
   useEffect(() => {
     const root = document.getElementById("mah-root");
     if (!root) return;
@@ -1133,7 +1172,6 @@ export default function MahmoudPortfolio() {
   }, []);
 
   const goTo = (page) => {
-    setPrevActive(active);
     setActive(page);
     setMenuOpen(false);
     document.getElementById("mah-root")?.scrollTo({ top: 0, behavior: "smooth" });
@@ -1188,11 +1226,6 @@ export default function MahmoudPortfolio() {
       font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px;
       color: #fff; letter-spacing: -0.02em; cursor: pointer;
       display: flex; align-items: center; gap: 9px; user-select: none;
-    }
-    .nav-logo-dot {
-      width: 9px; height: 9px; border-radius: 50%;
-      background: #00e5ae;
-      box-shadow: 0 0 10px rgba(0,229,174,0.5);
     }
 
     .nav-center {
@@ -1295,17 +1328,60 @@ export default function MahmoudPortfolio() {
       position: relative; z-index: 1;
       padding: 0 80px;
     }
+
+    /* Hero two-column layout */
+    .home-hero-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 48px;
+    }
+    .home-hero-text { flex: 1; min-width: 0; }
+
+    /* Avatar */
+    .home-avatar-wrap {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .home-avatar-ring {
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      padding: 4px;
+      background: conic-gradient(#00e5ae 0deg, #4f9eff 120deg, #a78bfa 240deg, #00e5ae 360deg);
+      animation: spin 8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .home-avatar {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: #0e1620;
+      border: 4px solid #07090f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .home-avatar-initials {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 52px;
+      color: #00e5ae;
+      letter-spacing: -0.03em;
+      user-select: none;
+    }
+
     .home-greeting {
       font-size: 11px; letter-spacing: 0.16em; color: #00e5ae;
       margin-bottom: 18px;
     }
     .home-name {
       font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: clamp(38px, 5.5vw, 70px);
+      font-size: clamp(28px, 4vw, 60px);
       color: #fff; letter-spacing: -0.035em; line-height: 1.05;
       margin-bottom: 18px;
     }
-    .home-role-row { font-size: 20px; color: #5a6a80; margin-bottom: 26px; }
+    .home-role-row { font-size: 18px; color: #5a6a80; margin-bottom: 26px; }
     .home-role-static { color: #5a6a80; }
     .home-role-dynamic {
       display: inline-block;
@@ -1393,7 +1469,7 @@ export default function MahmoudPortfolio() {
     .tl-dot-live { background: #00e5ae; border-color: #00e5ae; box-shadow: 0 0 0 5px rgba(0,229,174,0.14); }
     .tl-line { flex: 1; width: 1px; background: rgba(255,255,255,0.07); min-height: 30px; margin-top: 6px; }
     .tl-card {
-      flex: 1; padding-bottom: 48px;
+      flex: 1;
       background: #0b1018; border: 1px solid rgba(255,255,255,0.07);
       border-radius: 14px; padding: 26px 30px; margin-bottom: 20px;
     }
@@ -1517,7 +1593,6 @@ export default function MahmoudPortfolio() {
       font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px;
       color: #fff; cursor: pointer; display: flex; align-items: center; gap: 8px;
     }
-    .footer-logo-dot { width: 8px; height: 8px; border-radius: 50%; background: #00e5ae; }
     .footer-copy { font-size: 12px; color: #3a4a60; }
     .footer-links { display: flex; gap: 20px; }
     .footer-links a { font-size: 12px; color: #3a4a60; text-decoration: none; transition: color 0.2s; }
@@ -1539,6 +1614,9 @@ export default function MahmoudPortfolio() {
       .skills-grid { grid-template-columns: 1fr 1fr; }
       .projects-grid { grid-template-columns: 1fr; }
       .cert-grid { grid-template-columns: 1fr; }
+      .home-hero-row { flex-direction: column-reverse; gap: 36px; }
+      .home-avatar-ring { width: 200px; height: 200px; }
+      .home-avatar-initials { font-size: 40px; }
     }
     @media (max-width: 560px) {
       .section { padding: 88px 20px 50px; }
@@ -1548,6 +1626,8 @@ export default function MahmoudPortfolio() {
       .section-title { font-size: 28px; }
       .footer { padding: 20px; }
       .footer-inner { flex-direction: column; align-items: flex-start; }
+      .home-avatar-ring { width: 160px; height: 160px; }
+      .home-avatar-initials { font-size: 32px; }
     }
   `;
 
@@ -1558,7 +1638,7 @@ export default function MahmoudPortfolio() {
       {/* ── Top Navbar ── */}
       <nav className={`navbar${scrolled ? " solid" : ""}`}>
         <div className="nav-logo" onClick={() => goTo("home")}>
-          <span className="nav-logo-dot" />
+          <FaChartPie style={{ color: "#00e5ae", fontSize: 18 }} />
           {data.initials}
         </div>
 
