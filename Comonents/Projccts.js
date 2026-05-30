@@ -77,7 +77,7 @@ const projects = [
     title: 'Instgram web App',
     description: 'A web application to manage and display post and stories. Built using Django, HTML, Janga[Template Engine] ,and CSS.',
     image: '/imges/instgram.png',
-    livePreview: '',
+    livePreview: 'https://instagramappp.pythonanywhere.com/',
     github: 'https://github.com/mahmoudamrhassan/nextjs',
     category: 'Full Stack Developer',
 
