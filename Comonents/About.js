@@ -35,7 +35,6 @@ const AboutMe = () => {
     </section>
   );
 };
-
 const styles = {
   aboutSection: {
     padding: '4rem 2rem',
@@ -74,5 +73,4 @@ const styles = {
     maxWidth: '200px',
   },
 };
-
 export default AboutMe;

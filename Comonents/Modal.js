@@ -1,5 +1,4 @@
 import React from 'react';
-
 const Modal = ({ isOpen, onClose, imageSrc, title }) => {
   if (!isOpen) return null;
 
@@ -13,7 +12,6 @@ const Modal = ({ isOpen, onClose, imageSrc, title }) => {
     </div>
   );
 };
-
 const styles = {
   modalOverlay: {
     position: 'fixed',
@@ -50,5 +48,4 @@ const styles = {
     cursor: 'pointer',
   },
 };
-
 export default Modal;
